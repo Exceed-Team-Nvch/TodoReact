@@ -6,10 +6,12 @@ import { Task } from "../interfaces";
 
 type Props = {
     task: Task,
-    changeIsDoneState: (id: string) => void
+    changeIsDoneState: (id: string) => void,
+    deleteTask:(id:string) => void,
+    editTask: (id: string, newText: string) => void
 }
 
-export const TodoItem: React.FC<Props> = ({ task, changeIsDoneState}: Props) => {
+export const TodoItem: React.FC<Props> = ({ task, changeIsDoneState, deleteTask, editTask}: Props) => {
 
     const textValue = task.text;
     const isDone = task.isDone;
@@ -18,8 +20,8 @@ export const TodoItem: React.FC<Props> = ({ task, changeIsDoneState}: Props) => 
     return (
         <div className="todo-item" >
             <Circle isDone={isDone} id={id} changeIsDoneState={changeIsDoneState}/>
-            <TodoText textValue={textValue}/>
-            <CancelIcon />
+            <TodoText textValue={textValue} editTask={editTask} id={id} />
+            <CancelIcon id={id} deleteTask={deleteTask}/>
         </div>
     )
 }

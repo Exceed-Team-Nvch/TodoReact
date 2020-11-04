@@ -8,7 +8,7 @@ body {
     text-transform: uppercase;
 }
 
-.todo-input-wrapper {
+.todo-item-wrapper {
     overflow-y: auto;
     height: 475px;
 }
