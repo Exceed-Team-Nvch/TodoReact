@@ -4,11 +4,12 @@ import { useState , useRef} from "react";
 
 type Props = {
     textValue : string,
-    editTask: (id: string, newText: string) => void,
-    id: string
+    id: string,
+    setTasks: any
 }
 
-export const TodoText: React.FC<Props> = ({ id, textValue, editTask }: Props) => {
+
+export const TodoText: React.FC<Props> = ({ id, textValue, setTasks }: Props) => {
 
     const ref = useRef<HTMLInputElement>(null);
     const [editingTask, setEditingTask] = useState<boolean>(false);
@@ -21,12 +22,20 @@ export const TodoText: React.FC<Props> = ({ id, textValue, editTask }: Props) =>
     function spanDbClick() {
         setEditingTask(!editingTask);
     }
+
     function keyPressHandler(key: string,val: string) {
         if (key === 'Enter' && val.trim()) {
-            editTask(id,val);
+          setTasks(tasks => { return tasks.map((task) => {
+            if (task._id === id) {
+              task.text = val;
+          }
+          return task;
+          })
+        });
             setEditingTask(!editingTask);
         }
     }
+
     function cancelEditingTask() {
         setEditingTask(!editingTask);
     }

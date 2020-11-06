@@ -1,17 +1,20 @@
 import React from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure();
 
 type Props = {
     id: string,
-    deleteTask: (id: string) => void
+    setTasks: any,
+    deleteTask: any
 }
 
-export const CancelIcon: React.FC<Props> = ({ id, deleteTask }: Props) => {
 
-    function clickHandler(id: string):void {
-        deleteTask(id);
-    }
+export const CancelIcon: React.FC<Props> = ({ id, setTasks , deleteTask }: Props) => {
 
+    
     return (
-        <span className="cancel-icon" onClick={() => clickHandler(id)} ></span>
+        <span className="cancel-icon" onClick={() => deleteTask(id)} ></span>
     )
 }
