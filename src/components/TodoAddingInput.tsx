@@ -1,49 +1,20 @@
-import React, { useState } from "react";
-import {  toast } from "react-toastify";
+import React, { useState} from "react";
+import {  useDispatch } from 'react-redux';
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
-import { BASE_URL } from './TodoList';
+import { addTodo } from '../actions/index';
 
-type Props = {
-    setTasks: any,
 
-}
+export const TodoAddingInput: React.FC = () => {
 
- function apiAddTask(value: string): Promise<any> { 
-    return axios.post(BASE_URL,{text:value, isDone: false});
-}
-
-export const TodoAddingInput: React.FC<Props> = ({ setTasks }: Props) => {
+    const dispatch = useDispatch();
 
     const [value, setValue] = useState<string>('');
 
 
     function keyPressHandler(key: string,value: string) {
         if (key === 'Enter' && value.trim()) {
+            dispatch(addTodo(value));
             setValue('');
-            apiAddTask(value).then((res) => {
-                setTasks(tasks => tasks.concat([{ text: value, isDone: false, _id: res.data.data._id }]));
-                // TODO: move all toast methods to separate service
-                toast.success("Task added successfully", {
-                position: "bottom-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                });
-            },(err) => {
-                toast.error(`something gone wrong`, {
-                  position: "bottom-right",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                })
-            })
         }
     } 
     

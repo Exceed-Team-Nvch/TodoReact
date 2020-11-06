@@ -1,35 +1,45 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
 import axios from "axios";
-import { BASE_URL } from "./TodoList";
+import Button from "@material-ui/core/Button";
+import { useDispatch, useSelector} from 'react-redux';
+import { deleteAllTodos, filterTodo } from '../actions'
+import { BASE_URL } from "../components/TodoList";
 
-type Props = {
-  setTasks: any;
-  setFilterState: any;
-};
 
-export const TodoBottomBar: React.FC<Props> = ({
-  setFilterState,
-  setTasks,
-}: Props) => {
+
+export const TodoBottomBar:React.FC = () => {
+
+  const dispatch = useDispatch();
   const filterTexts = ["all", "active", "completed"];
 
   function clickHandler(textValue: string): void {
-    setFilterState(textValue);
-  }
-
-  function deleteCompletedTasks(): void {
-    setTasks((tasks) =>
-      tasks.filter((task) => {
+    dispatch(filterTodo(textValue));
+    }
+    const tasks = useSelector(state => state.todos);
+  // function deleteCompletedTasks(): void {
+  //   setTasks((tasks) =>
+  //     tasks.filter((task) => {
+  //       if (task.isDone) {
+  //         axios.delete(`${BASE_URL}/${task._id}`);
+  //       } else {
+  //         return task;
+  //       }
+  //     })
+  //   );
+  //   setFilterState("all");
+  // }
+    function deleteAll() {
+      const deletingTasks = tasks.filter(task => {
         if (task.isDone) {
           axios.delete(`${BASE_URL}/${task._id}`);
         } else {
-          return task;
+          return task
         }
-      })
-    );
-    setFilterState("all");
-  }
+        dispatch(deleteAllTodos(deletingTasks));
+      });
+    }
+
+
 
   return (
     <div className="todo-bottom-bar">
@@ -42,7 +52,7 @@ export const TodoBottomBar: React.FC<Props> = ({
           {item}
         </Button>
       ))}
-      <Button className="btn clear-btn" onClick={deleteCompletedTasks}>
+      <Button className="btn clear-btn" onClick={(evt) => deleteAll()} >
         clear completed
       </Button>
     </div>

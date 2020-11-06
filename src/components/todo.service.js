@@ -1,1 +1,0 @@
-export const CANCELED_DELETED_TODOS = new Map();
