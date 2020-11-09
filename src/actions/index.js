@@ -9,10 +9,22 @@ export const ACTION_EDIT_TODO = "ACTION_EDIT_TODO";
 export const ACTION_FILTER_TODO = 'ACTION_FILTER_TODO';
 export const ACTION_DELETE_ALL_TODOS = 'ACTION_DELETE_ALL_TODOS';
 
-export const deleteAllTodos = (deletingArray) => ({
-  type :ACTION_DELETE_ALL_TODOS,
-  deletingArray
-})
+export const deleteAllTodos = (array) => {
+  return function deleteAllTodos(dispatch) {
+   async function deletingArray ()  { 
+    return array.filter((task) => {
+       if (task.isDone) {
+        axios.delete(`${BASE_URL}/${task._id}`);
+       } else {
+        return task;
+       }
+     })};
+     deletingArray().then((res) => {
+       console.log(res);
+       dispatch({ type: ACTION_DELETE_ALL_TODOS, res });
+     });
+  }
+}
 
 export const filterTodo = (filter) => ({
 
@@ -23,15 +35,17 @@ export const filterTodo = (filter) => ({
 
 export const addTodo = (value) => {
   let isLoading = true;
+  isLoading? console.log('loading started'): console.log('loading is not started');
   return function addTodo(dispatch) {
     return axios.post(BASE_URL, { text: value, isDone: false }).then(
       (result) => {
         dispatch({ type: ACTION_ADD_TODO, task: result.data.data });
         isLoading = false;
+        !isLoading ? console.log('loading is over'): console.log('something gone wrong');
       },
       (failue) => {
         isLoading = false;
-        console.log("something gone wrong");
+        !isLoading ? console.log('loading is over'): console.log('something gone wrong');
       }
     );
   };

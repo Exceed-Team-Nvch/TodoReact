@@ -21,7 +21,7 @@ export const TodoList:React.FC = () => {
 
   useEffect(() => {
     dispatch(downloadTodos());
-  }, []);
+  }, [dispatch]);
 
  
 
@@ -76,9 +76,6 @@ export const TodoList:React.FC = () => {
     <div className="todo-list">
       <TodoAddingInput  />
       <div className="todo-item-wrapper">
-        {console.log(tasks)}
-        {console.log(filter)} 
-        {console.log(filteredTasks(filter))}
         {filteredTasks(filter).map((task) => {
           return (
             <TodoItem

@@ -3,7 +3,7 @@ const initialState = [];
 const todoReducer = (state = initialState, action) => {
     switch (action.type) {
       case 'ACTION_DELETE_ALL_TODOS':
-        return action.deletingArray;
+        return action.res;
 
       case 'ACTION_ADD_TODO':
         return [...state, action.task ];
